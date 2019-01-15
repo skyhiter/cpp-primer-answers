@@ -36,7 +36,7 @@ int main()
 ```
 $ g++ -o exercise1_2 exercise1_2.cpp -Wall
 $ ./exercise1_2
-# Unix系统命令 echo $? 记录上一个程序的返回值（windows为echo %ERRORLEVEL%，输出-1）
+# Unix系统命令 echo $? 记录上一个程序的返回值（windows为echo %ERRORLEVEL%，输出-1）
 $ echo $?
 # 这里本来应该是-1的，但是Unix的程序exit code定义为8-bits的unsigned int, -1转8-bits unsigned int就是255
 255
