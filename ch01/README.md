@@ -330,3 +330,38 @@ int main()
   - 类型错误：比如“将int赋值给string类型”
   - 声明错误：比如“变量x未定义”
 
+## 练习1.16
+
+> 编写程序，从cin读取一组数，输出其和。
+
+```C++
+#include <iostream>
+
+int main()
+{
+    int v = 0, sum = 0;
+    // Unix按CTRL+D表示输入流终止（Win是CTRL+Z）
+    // 正确的输入方式：1 2 3 4 5 回车 CTRL+D
+    while (std::cin >> v)
+    {
+        sum += v;
+    }
+    std::cout << sum << std::endl;
+    return 0;
+}
+```
+
+## 练习1.17
+
+> 如果输入的所有值都是相等的，本节的程序会输出什么？如果没有重复值，输出又会是怎样的？
+
+答案：
+
+相同、不同情况下的输出为：
+![exercise1_17输出示例](../pictures/exercise1_17_output.png)
+
+## 练习1.18
+
+> 编译并运行本节的程序，给它输入全都相等的值。再次运行程序，输入没有重复的值。
+
+答案：同`练习1.17`，源码见`exercise1_17.cpp`。
