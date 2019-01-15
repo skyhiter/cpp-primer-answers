@@ -21,6 +21,8 @@ InstalledDir: /Library/Developer/CommandLineTools/usr/bin
 * 第三方中文答案[《C++ Primer》第五版中文版习题答案](https://github.com/huangmingchuan/Cpp_Primer_Answers)
 * 官方答案书籍《C++ Primer习题集》，第五版，电子工业出版社，2015年3月第1版，2015年12月第4次印刷
 
+---
+
 ## 中文原书勘误
 中文《C++ Primer》第五版包含了较多的错误，部分勘误如下：
 ### 1. P16 练习1.19
