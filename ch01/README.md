@@ -38,7 +38,7 @@ $ g++ -o exercise1_2 exercise1_2.cpp -Wall
 $ ./exercise1_2
 # Unix系统命令 echo $? 记录上一个程序的返回值（windows为echo %ERRORLEVEL%，输出-1）
 $ echo $?
-# 这里本来应该是-1的，但是Unix的程序exit code定义为8-bits的unsigned int, -1转8-bits unsigned int就是255(补码存储)
+# 这里本来应该是-1的，但是Unix的程序exit code定义为8-bits的unsigned int, -1转8-bits unsigned int就是255(补码存储)
 255
 ```
 ![excercise1_2_command](../pictures/exercise1_2_command.png)
@@ -120,13 +120,13 @@ exercise1_6.cpp:8:5: error: expected expression
     ^
 2 errors generated.
 ```
-原因：第一行程序末尾有了分号，说明第一行语句结束了；后面的两行应该是完整的新语句了，但是是以`<<`开头，显然这不是一个我完整的语句，所以改为后面两行前也要加`std::cout`.
+原因：第一行程序末尾有了分号，说明第一行语句结束了；后面的两行应该是完整的新语句了，但是是以`<<`开头，显然这不是一个完整的语句，所以改为后面两行前也要加`std::cout`.
 
 ## 练习1.7
 
 > 编译一个包含不正确的嵌套注释的程序，观察编译器返回的错误信息。
 
-编译错误信息如下：
+编译错误信息如下：
 ```
 exercise1_7.cpp:6:16: warning: '/*' within block comment [-Wcomment]
     * 注释对/* */不能嵌套。
@@ -155,7 +155,7 @@ exercise1_7.cpp:7:58: error: non-ASCII characters are not allowed outside of lit
 2 warnings and 6 errors generated.
 ```
 
-界定符对注释`/* */`中的`/*`会匹配第一个遇到的`*/`，然后`不能嵌套。`就当成了代码中的变量名/语句等等，gcc可能会报错`error: stray(意外的，走失的) '\262' in program`这类信息。由注释引发的错误通常是难以理解的，而且不同情况的错误信息不同。
+界定符对注释`/* */`中的`/*`会匹配第一个遇到的`*/`，然后`不能嵌套。`就当成了代码中的变量名/语句等等，gcc可能会报错`error: stray(意外的，走失的) '\262' in program`这类信息。由注释引发的错误通常是难以理解的，而且不同情况的错误信息不同。
 
 ![界定符对注释错误](../pictures/exercise1_7_error.png)
 
@@ -314,7 +314,7 @@ int main()
 > 对比for循环和while循环，两种形式的优缺点各是什么？
 
 答案：
-* 如果循环次数已知，用`for`更方便；循环次数无法预知的情况可以考虑用`while`，循环判断条件可以在循环体改变。
+* 如果循环次数已知，用`for`更方便；循环次数无法预知的情况可以考虑用`while`，循环判断条件可以在循环体改变。
 * [在Stack Overflow上面有与这个相似的问题](https://stackoverflow.com/questions/2950931/for-vs-while-in-c-programming)
 
 ## 练习1.15
@@ -323,10 +323,10 @@ int main()
 
 答案：
 
-* 不同的编译器给出的错误信息**可能差别很大**，本仓库使用的是`clang`编译器（macOS中的`g++`其实是`clang`的别名），跟常见的`GUN g++`表现（如错误提示信息等）有很大不同，请读者注意。导致程序出错的原因可能不止一个，不同的编译器对错误有不同的解释。
+* 不同的编译器给出的错误信息**可能差别很大**，本仓库使用的是`clang`编译器（macOS中的`g++`其实是`clang`的别名），跟常见的`GUN g++`表现（如错误提示信息等）有很大不同，请读者注意。导致程序出错的原因可能不止一个，不同的编译器对错误有不同的解释。
 * 编译器给出的错误提示信息可能是不准确的甚至是完全错误的。
 * 编译器能发现的常见错误有，
   - 语法错误：比如“少了分号”
-  - 类型错误：比如“将int赋值给string类型”
+  - 类型错误：比如“将int赋值给string类型”
   - 声明错误：比如“变量x未定义”
 
