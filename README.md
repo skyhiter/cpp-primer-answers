@@ -4,7 +4,7 @@
 
 编译环境：
 * macOS Mojave 10.14.2
-* g++ --version
+* compiler: Apple LLVM version 10.0.0 (clang-1000.10.44.4)
 ```
 $ g++ --version
 
