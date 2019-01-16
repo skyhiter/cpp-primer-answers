@@ -420,6 +420,8 @@ int main()
 
 ![exercise1.24输出截图](../pictures/exercise1_24_output.png)
 
+编注：练习1.24的要求我理解的是同一个ISBN需要合并成一个输出，`exercise1_23.cpp`并未实现这个功能，但是原版答案就是这么写的，没办法。
+
 ## 练习1.25
 
 > 借助网站上的 Sales_item.h 头文件，编译并运行本节给出的书店程序。
