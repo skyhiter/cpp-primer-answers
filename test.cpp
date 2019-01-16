@@ -1,12 +1,12 @@
 #include <iostream>
 
+using namespace std;
+
 int main()
 {
-    int i = 2333;
-    for (int i = 0; i < 10; ++i)
-    {
-        std::cout << i << std::endl;
-    }
-    std::cout << i << std::endl;
+    cout << sizeof(short) << endl;
+    cout << sizeof(int) << endl;
+    cout << sizeof(long) << endl;
+    cout << sizeof(long long) << endl;
     return 0;
 }
