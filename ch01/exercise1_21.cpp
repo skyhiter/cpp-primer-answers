@@ -17,6 +17,5 @@ int main()
     {
         std::cout << "Different ISBN!" << std::endl;
     }
-
     return 0;
 }
