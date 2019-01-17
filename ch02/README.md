@@ -69,11 +69,11 @@ std::cout << u - i << std::endl;
 
 解释：
 
-在计算机里，一切数值都是补码存储，比如无符号数`1`在内存中是补码形式(1的补码还是1)的二进制，有符号数`-1`在内存中也是补码形式(-1的补码是另一个很大的数)的二进制，各种运算都是以这种补码运算的。
+在计算机里，一切数值都是补码存储，比如无符号数`1`在内存中是补码形式(1的补码还是1)的二进制，有符号数`-1`在内存中也是补码形式(-1的补码是另一个很大的数)的二进制，各种运算都是以这种补码运算的。
 
 无符号数减无符号数还是无符号数，所以`u - u2`应该也是无符号数。因为`u - u2 = -32`，所以要把`-32`看作无符号数。在计算机里，一切数值都是补码存储，`-32`在内存中就是补码(FF FF FF E0)的形式存在的，将FF FF FF E0看作是无符号的话，就是4294967264。
 
-有符号数减无符号数会先把有符号转为无符号数，再相减。所以`i - u`自动转为了`unsigned i - unsigned u`，对于 int 10 来说，其 unsigned 的形式也是10，所以相减是0.
+有符号数减无符号数会先把有符号转为无符号数，再相减。所以`i - u`自动转为了`unsigned i - unsigned u`，对于 int 10 来说，其 unsigned 的形式也是10，所以相减是0.
 
 **切勿混用有符号数和无符号数！**
 
@@ -93,9 +93,9 @@ std::cout << u - i << std::endl;
 
 答案：
 
-- (a) 'a'是普通的字符字面值, L'a'是wchar_t类型, "a"是字符串字面值, L"a"是宽字符串字面值。
+- (a) 'a'是普通的字符字面值, L'a'是wchar_t类型, "a"是字符串字面值, L"a"是宽字符串字面值。
 - (b) 10就是普通的十进制有符号数10, 10u是十进制无符号数10, 10L是十进制有符号数Long类型的整型10, 10uL是十进制无符号数Long类型的无符号整型10, 012是八进制整型, 0xC是十六进制整型。
-- (c) 3.14是double, 3.14f是float, 3.14L是long double。
+- (c) 3.14是double, 3.14f是float, 3.14L是long double。
 - (d) 10是十进制整型, 10u是十进制无符号整型, 10.是double, 10e-2是double（科学计数法的形式，即$10 \times 10^{-2}$）。
 
 ## 练习2.6
@@ -122,7 +122,7 @@ int month = 09, day = 07;
 
 - (a) 带转义符的字符串字面值。`\145`是转义符，其中145是八进制，转为十进制就是101，对应ASCII表的`e`；`\012`同理，12的十进制是10，对应ASCII表的`LF`(换行)。原字符串等价于"Who goes with Fergus?(换行)"。
 - (b) long double类型，且是科学计数法形式，$3.14\times10^{1}$.
-- (c) 后缀`f`说明是float，也就是说`f`前面必须是带小数点的。但是前面是整型，所以会报错`invalid digit 'f' in decimal constant`。可以改为`1024.f`就好了。
+- (c) 后缀`f`说明是float，也就是说`f`前面必须是带小数点的。但是前面是整型，所以会报错`invalid digit 'f' in decimal constant`。可以改为`1024.f`就好了。
 - (d) long double.
   
 ## 练习2.8
@@ -157,22 +157,53 @@ int main()
 
 (a) 报错误信息，应先定义后使用。
 ```C++
+// 改正
 int input_value;
 std::cin >> input_value;
 ```
 
-(b) 报警告信息，`{}`列表初始化方式会检测是否精度丢失。
-用3.14初始化int，会自动转为3，造成了精度丢失（窄化操作），这种初始化方式会导致编译器发出警告（`warning: implicit conversion from 'double' to 'int' changes value from 3.14 to 3`）。
+(b) 如果clang没有设置std=c++11，报警告信息。`{}`列表初始化方式会检测是否精度丢失。
+用3.14初始化int，会自动转为3，造成了精度丢失（窄化操作），这种初始化方式会导致编译器(未严格执行C++11标准的)发出警告（`warning: implicit conversion from 'double' to 'int' changes value from 3.14 to 3`）。
+
+如果clang设置了std=c++11，报错误信息`error: type 'double' cannot be narrowed to 'int' in initializer list [-Wc++11-narrowing]`。
 ```C++
+// 改正
 double i = { 3.14 };
 // 或者
 double i(3.14);
 ```
 
-(c) 报错误信息，从左到右扫描发现`wage`未定义。
+(c) 报错误信息，从左到右扫描发现`wage`未定义`error: use of undeclared identifier 'wage'`。
 ```C++
+// 改正
 double wage;
 double salary = wage = 9999.99;
 ```
 
-(d) 报警告信息，虽然会造成精度丢失(窄化操作使`i = 3`)，但是这种初始化方式不会报错。
+(d) 报警告信息，虽然会造成精度丢失(窄化操作使`i = 3`)，但是这种初始化方式不会报错`warning: implicit conversion from 'double' to 'int' changes value from 3.14 to 3 [-Wliteral-conversion]`。
+
+## 练习2.10
+
+> 下列变量的初值分别是什么？
+
+```C++
+std::string global_str;
+int global_int;
+int main()
+{
+    int local_int;
+    std::string local_str;
+}
+```
+
+答案：
+```C++
+std::string global_str; // string对象本身提供了默认的初始化方法，即初始化为空串
+int global_int; // 全局变量默认初始化0
+int main()
+{
+    int local_int; // 函数内局部变量不自动初始化，随机值
+    std::string local_str; // string对象本身提供了默认的初始化方法，即初始化为空串
+}
+```
+
