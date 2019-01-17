@@ -150,7 +150,7 @@ int main()
 
 ```C++
 (a) std::cin >> int input_value;
-(b) int i = { 3.14 };
+(b) int i = {3.14};
 (c) double salary = wage = 9999.99;
 (d) int i = 3.14;
 ```
@@ -168,7 +168,7 @@ std::cin >> input_value;
 如果clang设置了std=c++11，报错误信息`error: type 'double' cannot be narrowed to 'int' in initializer list [-Wc++11-narrowing]`。
 ```C++
 // 改正
-double i = { 3.14 };
+double i = {3.14};
 // 或者
 double i(3.14);
 ```
@@ -196,14 +196,127 @@ int main()
 }
 ```
 
-答案：
+答案：
 ```C++
-std::string global_str; // string对象本身提供了默认的初始化方法，即初始化为空串
+std::string global_str; // string对象本身提供了默认的初始化方法，即初始化为空串
 int global_int; // 全局变量默认初始化0
 int main()
 {
     int local_int; // 函数内局部变量不自动初始化，随机值
-    std::string local_str; // string对象本身提供了默认的初始化方法，即初始化为空串
+    std::string local_str; // string对象本身提供了默认的初始化方法，即初始化为空串
 }
 ```
+
+## 练习2.11
+
+> 指出下面的语句是声明还是定义：
+```C++
+(a) extern int ix = 1024;
+(b) int iy;
+(c) extern int iz;
+```
+
+答案：
+
+声明只是告诉程序有这个变量存在，而定义则是实实在在的创建与名字管理的实体。一个程序中，同一个变量只能定义一次，且出现在某一个文件中，而声明则可以出现多次，出现在多个文件中。
+- (a) 是定义，因为初始化了。
+- (b) 声明 + 定义。
+- (c) 只是声明。
+
+## 练习2.12
+
+> 请指出下面的名字中哪些是非法的？
+- (a) int double = 3.14;
+- (b) int _;
+- (c) int catch-22;
+- (d) int 1_or_2 = 1;
+- (e) double Double = 3.14;
+
+答案：
+
+- (a) int double = 3.14; // 非法，double是关键字，是内置的数据类型名
+- (b) int _; // 合法
+- (c) int catch-22; // 非法，可以是`_`，但不能是`-`，因为与`减号`有歧义
+- (d) int 1_or_2 = 1; // 非法，不能以数字开头
+- (e) double Double = 3.14; // 合法
+  
+## 练习2.13
+
+> 下面程序中 j 的值是多少？
+```C++
+int i = 42;
+int main()
+{
+    int i = 100;
+    int j = i;
+}
+```
+
+`j` 的值是 `100` ，因为局部变量 `i` 覆盖了全局变量 `i` 。C++允许内层作用域重新定义外层作用域中已经有的名字。
+
+## 练习2.14
+
+> 下面的程序合法吗？如果合法，它将输出什么？
+```C++
+int i = 100, sum = 0;
+for (int i = 0; i != 10; ++i)
+    sum += i;
+std::cout << i << " " << sum << std::endl;
+```
+
+合法，输出 100，45。外层作用域中间嵌套了内层的作用域。
+
+## 练习2.15
+
+> 下面的哪个定义是不合法的？为什么？
+
+- (a) int ival = 1.01;
+- (b) int &rval1 = 1.01;
+- (c) int &rval2 = ival;
+- (d) int &rval3;
+
+答案：
+- (a) 合法。
+- (b) 非法，引用的初始值不能是字面值（必须是对象）。
+- (c) 合法。
+- (d) 非法，引用必须初始化，绑定某个实体对象。
+
+
+## 练习2.16
+
+> 考察下面的所有赋值然后回答：哪些赋值是不合法的？为什么？哪些赋值是合法的？它们执行了什么样的操作？
+
+```C++
+int i = 0, &r1 = i; 
+double d = 0, &r2 = d;
+
+(a) r2 = 3.14159;
+(b) r2 = r1;
+(c) i = r2;
+(d) r1 = d;
+```
+
+都合法。
+
+- (a) r2 就是 d。所以相当于给 d 赋值为 3.14159。
+- (b) r2 就是 d，r1 就是 i，所以相当于(int 0)赋值给(double d)，会执行自动转换（int->double）。
+- (c) (double 0)赋值给(int i)，会发生小数截取。
+- (d) (double 0)赋值给(int i)，会发生小数截取。
+
+
+## 练习2.17
+
+> 执行下面的代码段将输出什么结果？
+```C++
+int i, &ri = i;
+i = 5;
+ri = 10;
+std::cout << i << " " << ri << std::endl;
+```
+
+答案：输出 10， 10。
+
+## 练习2.18
+
+> 编写代码分别改变指针的值以及指针所指对象的值。
 
