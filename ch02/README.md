@@ -75,6 +75,8 @@ std::cout << u - i << std::endl;
 
 有符号数减无符号数会先把有符号转为无符号数，再相减。所以`i - u`自动转为了`unsigned i - unsigned u`，对于 int 10 来说，其 unsigned 的形式也是10，所以相减是0.
 
+**切勿混用有符号数和无符号数！**
+
 ## 练习2.4
 
 > 编写程序检查你的估计是否正确，如果不正确，请仔细研读本节直到弄明白问题所在。
@@ -153,3 +155,24 @@ int main()
 (d) int i = 3.14;
 ```
 
+(a) 报错误信息，应先定义后使用。
+```C++
+int input_value;
+std::cin >> input_value;
+```
+
+(b) 报警告信息，`{}`列表初始化方式会检测是否精度丢失。
+用3.14初始化int，会自动转为3，造成了精度丢失（窄化操作），这种初始化方式会导致编译器发出警告（`warning: implicit conversion from 'double' to 'int' changes value from 3.14 to 3`）。
+```C++
+double i = { 3.14 };
+// 或者
+double i(3.14);
+```
+
+(c) 报错误信息，从左到右扫描发现`wage`未定义。
+```C++
+double wage;
+double salary = wage = 9999.99;
+```
+
+(d) 报警告信息，虽然会造成精度丢失(窄化操作使`i = 3`)，但是这种初始化方式不会报错。

@@ -6,7 +6,13 @@
 * Editor: [Visual Studio Code](https://code.visualstudio.com/)
 * OS: macOS Mojave 10.14.2
 * Compiler: Apple LLVM version 10.0.0 (clang-1000.10.44.4)
+
+编译命令：
+* `g++ test.cpp -o test -std=c++11`
+* `clang`需要指定C++11的flag
+  
 ```
+// g++(clang)版本
 $ g++ --version (macOS的g++其实就是clang的别名，并不是真正的GUN g++)
 
 Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
