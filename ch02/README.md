@@ -481,14 +481,18 @@ long *lp = &i;
 ```
 
 ```C++
-(a) int i = -1, &r = 0;         // 不合法, r 必须引用一个对象，不能是字面值
-(b) int *const p2 = &i2;        // 合法
-(c) const int i = -1, &r = 0;   // 合法
-(d) const int *const p3 = &i2;  // 合法
-(e) const int *p1 = &i2;        // 合法
-(f) const int &const r2;        // 不合法, r2 是引用，引用没有顶层 const
-(g) const int i2 = i, &r = i;   // 合法
+(a) int i = -1, &r = 0;         // 不合法，r 必须引用一个对象，不能是字面值
+(b) int *const p2 = &i2;        // 合法，const 可以绑定非 const，p2是 const，不能变即永远指向 i2，但是 p2 指向的 int 对象可以变（注意const 修饰的 p2）
+(c) const int i = -1, &r = 0;   // 合法，const int &r = 0 是合法的
+(d) const int *const p3 = &i2;  // 合法，p3是 const 不可变的，即永远指向 i2，同时 p3指向的也是一个不可变的 int，即不可通过 p3 修改所指对象的值
+(e) const int *p1 = &i2;        // 合法，p1 是一个指针，指向 const int，即不能通过 p1 修改所指对象的值
+(f) const int &const r2;        // 不合法, r2 是引用（不是对象），引用没有顶层 const，不能让引用恒定不变
+(g) const int i2 = i, &r = i;   // 合法，i2 是常量；r 是常量引用，const int &r = i 合法
 ```
+
+编注：
+* int &r = 0; // 非法
+* const int &r = 0; // 合法
 
 ## 练习2.28
 
