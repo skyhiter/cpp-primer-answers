@@ -6,7 +6,7 @@
 - 源文件：`.cpp`, `.cc`, `.cxx`, `.C`, `.c++`
 - 头文件：`.h`, `.hpp`, `.hxx`
 
-**Unix平台多为`.cc`，其他平台多为`.cpp`，头文件推荐使用`.h`或`.hpp`。**
+**Unix平台多为`.cc`，其他平台多为`.cpp`，头文件推荐使用`.h`或`.hpp`。**《C++ Primer》(5th Edition)使用的就是`.h`和`.cc`风格。
 
 参考链接:
  - [C++源文件的后缀名问题](https://www.cnblogs.com/bluestorm/archive/2012/09/05/2672527.html)
