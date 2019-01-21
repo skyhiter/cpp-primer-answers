@@ -8,8 +8,8 @@
 * Compiler: Apple LLVM version 10.0.0 (clang-1000.10.44.4)
 
 编译命令：
-* `g++ test.cpp -o test -std=c++11`
-* `clang`需要指定C++11的flag
+* `g++ test.cpp -o test -std=c++11` (`clang`**必须**手动指定C++11的flag)
+* 这里的`g++`使用的`clang`前端，编译信息与`GNU g++`相比有较大不同
   
 ```
 // g++(clang)版本
