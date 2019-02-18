@@ -499,11 +499,35 @@ long *lp = &i;
 > 说明下面的这些定义是什么意思，挑出其中不合法的。
 
 ```C++
-int i, *const cp;       // 不合法, const 指针必须初始化
-int *p1, *const p2;     // 不合法, const 指针必须初始化
-const int ic, &r = ic;  // 不合法, const int 必须初始化
-const int *const p3;    // 不合法, const 指针必须初始化
-const int *p;           // 合法. 一个指针，指向 const int
+(a) int i, *const cp;
+(b) int *p1, *const p2;
+(c) const int ic, &r = ic;
+(d) const int *const p3;
+(e) const int *p;
+```
+
+```C++
+(a) int i, *const cp;       // 不合法, const 指针 cp 必须初始化
+(b) int *p1, *const p2;     // 不合法, const 指针 p2 必须初始化
+(c) const int ic, &r = ic;  // 不合法, const int ic 必须初始化
+(d) const int *const p3;    // 不合法, const 指针 p3 必须初始化
+(e) const int *p;           // 合法. 一个指针，指向 const int
+```
+注意：
+
+**const 修饰的变量因为其值不能改变，所以必须初始化。**
+例如`clang`编译如下代码会出错：
+```C++
+const int i;
+std::cout << i << std::endl;
+```
+错误信息：
+```C++
+error: default initialization of an object of const type 'const int'
+    const int i;
+              ^
+                = 0
+1 error generated.
 ```
 
 ## 练习2.29
@@ -511,12 +535,40 @@ const int *p;           // 合法. 一个指针，指向 const int
 > 假设已有上一个练习中定义的那些变量，则下面的哪些语句是合法的？请说明原因。
 
 ```C++
-i = ic;     // 合法, 常量赋值给普通变量
-p1 = p3;    // 不合法, p3 是const指针不能赋值给普通指针
-p1 = &ic;   // 不合法, 普通指针不能指向常量
-p3 = &ic;   // 合法, p3 是常量指针且指向常量
-p2 = p1;    // 合法, 可以将普通指针赋值给常量指针
-ic = *p3;   // 合法, 对 p3 取值后是一个 int 然后赋值给 ic
+(a) i = ic;
+(b) p1 = p3;
+(c) p1 = &ic;
+(d) p3 = &ic;
+(e) p2 = p1;
+(f) ic = *p3;
+```
+
+```C++
+(a) i = ic;     // 合法, 常量赋值给普通变量
+(b) p1 = p3;    // 不合法, p3 是const指针不能赋值给普通指针,普通指针不能指向一个const变量
+(c) p1 = &ic;   // 不合法, ic是const int，p1是普通的int*，普通指针不能指向常量
+(d) p3 = &ic;   // 不合法, p3 是常量指针且指向常量，p3不能被重新赋值（不能被改变）
+(e) p2 = p1;    // 不合法, p2本身是常量指针（指向的是一个整型），p2本身不能被重新赋值
+(f) ic = *p3;   // 不合法, ic是const int，不可变
+```
+
+注意：
+
+**普通指针不能指向 const 变量。** 例如下代码，
+```C++
+int a = 10;
+const int *p = &a;
+
+int *r = p;
+std::cout << *r << std::endl;
+```
+
+编译出错：
+```C++
+error: cannot initialize a variable of type 'int *' with an lvalue of type 'const int *'
+    int *r = p;
+         ^   ~
+1 error generated.
 ```
 
 ## 练习2.30
@@ -524,22 +576,41 @@ ic = *p3;   // 合法, 对 p3 取值后是一个 int 然后赋值给 ic
 > 对于下面的这些语句，请说明对象被声明成了顶层const还是底层const？
 
 ```C++
-const int v2 = 0; int v1 = v2;
+const int v2 = 0;
+int v1 = v2;
 int *p1 = &v1, &r1 = v1;
 const int *p2 = &v2, *const p3 = &i, &r2 = v2;
 ```
+
+v2 是顶层const（v2本身不可变），p3 是顶层const（p3本身不可变）又是底层const（指向对象不可变）；p2 和 r2 是底层const（指向/引用的对象是const）。
+
+说明：
+
+顶层const或者底层const是针对“声明定义中带const字眼的变量说的”，顶层const表示本身是const的，不可变；底层const表示它指向（所引用）的那个对象是const的。
 
 ## 练习2.31
 
 > 假设已有上一个练习中所做的那些声明，则下面的哪些语句是合法的？请说明顶层const和底层const在每个例子中有何体现。
 
 ```C++
-r1 = v2; // 合法, 顶层const在拷贝时不受影响
-p1 = p2; // 不合法, p2 是底层const，如果要拷贝必须要求 p1 也是底层const
-p2 = p1; // 合法, int* 可以转换成const int*
+r1 = v2;
+p1 = p2;
+p2 = p1;
+p1 = p3;
+p2 = p3;
+```
+
+```C++
+r1 = v2; // 合法, v2是顶层const，顶层const在拷贝时不受影响
+p1 = p2; // 不合法, p2 是底层const，如果要拷贝必须要求 p1 也必须是底层const才行
+p2 = p1; // 合法, int* 可以转换成const int*（注意p2本身不是const的，p2指向的才是const）
 p1 = p3; // 不合法, p3 是一个底层const，p1 不是
 p2 = p3; // 合法, p2 和 p3 都是底层const，拷贝时忽略掉顶层const
 ```
+
+解释：
+
+执行拷贝操作时，顶层const和底层const区别明显。其中，顶层const不受影响，因为拷贝操作不会改变被拷贝对象的值。底层const则有限制，比如拷入和拷出对象必须拥有相同的底层const资格，或者两个兑现数据类型必须能够转换。一般来说，非常量可以转成常量，反之则不行。
 
 ## 练习2.32
 
@@ -549,7 +620,10 @@ p2 = p3; // 合法, p2 和 p3 都是底层const，拷贝时忽略掉顶层const
 int null = 0, *p = null;
 ```
 
-合法。指针可以初始化为 0 表示为空指针。
+不合法，编译错误。因为 `p` 是`int*`，`null` 是一个 `int` 变量，`*p = null` 单从语法角度来讲就是错误的，最起码是 `*p = &null` 才对。
+常用的指针初始化为空指针方法有：
+* `int *p = nullptr;`
+* `int *p = 0;`
 
 ## 练习2.33
 
@@ -567,6 +641,8 @@ g = 42; // g 是一个 const int 的引用，引用都是底层const，所以不
 ## 练习2.34
 
 > 基于上一个练习中的变量和语句编写一段程序，输出赋值前后变量的内容，你刚才的推断正确吗？如果不对，请反复研读本节的示例直到你明白错在何处为止。
+
+
 
 ## 练习2.35
 

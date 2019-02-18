@@ -4,7 +4,7 @@
 
 编译环境：
 * Editor: [Visual Studio Code](https://code.visualstudio.com/)
-* OS: macOS Mojave 10.14.2
+* OS: macOS Mojave 10.14.3
 * Compiler: Apple LLVM version 10.0.0 (clang-1000.10.44.4)
 
 编译命令：
@@ -38,5 +38,14 @@ InstalledDir: /Library/Developer/CommandLineTools/usr/bin
 1.6 书店程序，有两行注释位置写反了？？？
 
 第5行的注释 *"// 保存下一条交易记录的变量"* 和第8行的注释 *"// 保存和的变量"* 是不是应该**互相交换位置**？
+
+update: 该错误被证实，参见P229中间代码的注释：
+
+```C++
+Sales_data total; //保存当前求和结果的变量
+...
+Sales_data trans; //保存下一条交易数据的变量
+...
+```
 
 ### 
