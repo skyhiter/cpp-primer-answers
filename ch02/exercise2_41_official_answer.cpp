@@ -61,12 +61,107 @@ inline bool operator!=(const Sales_data &lhs, const Sales_data &rhs)
 
 Sales_data &Sales_data::operator+=(const Sales_data &rhs)
 {
-    return *this + rhs;
+    units_sold += rhs.units_sold;
+    saleprice = (saleprice * units_sold + rhs.saleprice * rhs.units_sold) / (units_sold + rhs.units_sold);
+    if (sellingprice != 0)
+    {
+        discount = saleprice / sellingprice;
+    }
+    return *this;
+}
+
+Sales_data operator+(const Sales_data &lhs, const Sales_data &rhs)
+{
+    Sales_data ret(lhs);
+    ret += rhs;
+    return ret;
+}
+
+std::istream &operator>>(std::istream &in, Sales_data &s)
+{
+    in >> s.bookNo >> s.units_sold >> s.sellingprice >> s.saleprice;
+    if (in && s.sellingprice != 0)
+    {
+        s.discount = s.saleprice / s.sellingprice;
+    }
+    else
+    {
+        s = Sales_data();
+    }
+    return in;
+}
+
+std::ostream &operator<<(std::ostream &out, const Sales_data &s)
+{
+    out << s.isbn() << " " << s.units_sold << " " << s.sellingprice << " "
+        << s.saleprice << " " << s.discount;
+    return out;
 }
 
 int main()
 {
-    std::cout << "\x32\x4d\x0a";
-    std::cout << "\x32\x09\x4d\x0a";
+    Sales_data book;
+    std::cout << "请输入销售记录：" << std::endl;
+    while (std::cin >> book)
+    {
+        std::cout << "ISBN、销售本书、原始价格、实售价格、折扣为" << book << std::endl;
+    }
+    Sales_data trans1, trans2;
+    std::cout << "请输入两条ISBN相同的销售记录：" << std::endl;
+    std::cin >> trans1 >> trans2;
+    if (compareIsbn(trans1, trans2))
+    {
+        std::cout << "汇总信息：ISBN、销售本书、原始价格、实售价格、折扣为 "
+                  << trans1 + trans2 << std::endl;
+    }
+    else
+    {
+        std::cout << "两条销售记录的ISBN不同" << std::endl;
+    }
+    Sales_data total, trans;
+    std::cout << "请输入几条ISBN相同的销售记录：" << std::endl;
+    if (std::cin >> total)
+    {
+        while (std::cin >> trans)
+        {
+            if (compareIsbn(total, trans))
+                total += trans;
+            else
+            {
+                std::cout << "当前书籍的ISBN不同" << std::endl;
+                break;
+            }
+        }
+        std::cout << "有效汇总信息：ISBN、销售本书、原始价格、实售价格、折扣为"
+                  << total << std::endl;
+    }
+    else
+    {
+        std::cout << "没有数据" << std::endl;
+        return -1;
+    }
+
+    int num = 1;
+    std::cout << "请输入若干销售记录：" << std::endl;
+    if (std::cin >> trans1)
+    {
+        while (std::cin >> trans2)
+        {
+            if (compareIsbn(trans1, trans2))
+            {
+                num++;
+            }
+            else
+            {
+                std::cout << trans1.isbn() << "共有" << num << "条销售记录" << std::endl;
+            }
+        }
+    }
+    else
+    {
+        std::cout << "没有数据" << std::endl;
+        return -1;
+    }
+
     return 0;
 }
