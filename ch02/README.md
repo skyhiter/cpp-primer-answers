@@ -622,7 +622,8 @@ int null = 0, *p = null;
 
 不合法，编译错误。因为 `p` 是`int*`，`null` 是一个 `int` 变量，`*p = null` 单从语法角度来讲就是错误的，最起码是 `*p = &null` 才对。
 常用的指针初始化为空指针方法有：
-* `int *p = nullptr;`
+* `int *p = nullptr;` (C++11新关键字)
+* `int *p = NULL;` (`NULL`是个宏定义，在`stddef.h`中被定义为`0`或`((void*)0)`或`nullptr`，具体看编译器，比如`C++11`就是定义为了`nullptr`)
 * `int *p = 0;`
 
 ## 练习2.33
@@ -630,19 +631,44 @@ int null = 0, *p = null;
 > 利用本节定义的变量，判断下列语句的运行结果。
 
 ```C++
-a = 42; // a 是 int
-b = 42; // b 是一个 int,(ci的顶层const在拷贝时被忽略掉了)
-c = 42; // c 也是一个int
-d = 42; // d 是一个 int *,所以语句非法
-e = 42; // e 是一个 const int *, 所以语句非法
-g = 42; // g 是一个 const int 的引用，引用都是底层const，所以不能被赋值
+a = 42; b = 42; c = 42;
+d = 42; e = 42; g = 42;
 ```
+
+答案：
+```C++
+a = 42; // 合法。a 是 int
+b = 42; // 合法。b 是一个 int, (虽然ci是const int，但ci的顶层const在拷贝时被忽略掉了)
+c = 42; // 合法。c 也是一个int, (cr是ci的别名，ci本身是const int，并且是顶层const，auto时会忽略顶层const)
+d = 42; // 非法。d 是一个 int *, 不能用字面常量给指针赋值，所以语句非法
+e = 42; // 非法。e 是一个 const int *, (ci是const int, 对ci取地址是一种底层const，suto时需保留)
+g = 42; // 非法。g 是一个 const int 的引用，引用都是底层const，是个常量，不能修改，所以不能被赋值
+```
+
+注意：
+
+`auto p = &a;` 这种形式的`aoto`说明`p`一定是某种类型的指针。
 
 ## 练习2.34
 
 > 基于上一个练习中的变量和语句编写一段程序，输出赋值前后变量的内容，你刚才的推断正确吗？如果不对，请反复研读本节的示例直到你明白错在何处为止。
 
+详见`exercise2_34.cpp`.
 
+后三行的编译错误信息如下：
+```C++
+exercise2_34.cpp:20:9: error: assigning to 'int *' from incompatible type 'int'
+    d = 42;
+        ^~
+exercise2_34.cpp:21:9: error: assigning to 'const int *' from incompatible type 'int'
+    e = 42;
+        ^~
+exercise2_34.cpp:22:7: error: cannot assign to variable 'g' with const-qualified type 'const int &'
+    g = 42;
+    ~ ^
+exercise2_34.cpp:12:11: note: variable 'g' declared const here
+    auto &g = ci;
+```
 
 ## 练习2.35
 
@@ -652,6 +678,34 @@ g = 42; // g 是一个 const int 的引用，引用都是底层const，所以不
 const int i = 42;
 auto j = i; const auto &k = i; auto *p = &i; 
 const auto j2 = i, &k2 = i;
+```
+
+答案：
+
+详见`exercise2_35.cpp`.
+```C++
+j 是 int
+k 是 const int 的引用
+p 是 const int *
+j2 是 const int
+k2 是 const int 的引用
+```
+提示：使用IDE，将鼠标移动到变量名上，类型就会自动提示出来。或者使用typeid关键字检测类型，比如：
+```C++
+#include <typeinfo> // 需要里面的type_info class
+...
+// typeid是C++的关键字，返回的是type_info class
+// .name()是c-string风格的字符串，不同编译器的name不同，比如
+// clang/GUN g++中的int类型对应的.name()就是i; visual C++ 就是int
+cout << typeid(i).name() << endl;
+...
+
+-- clang/GUN g++输出的typeid(i).name()如下 --
+val j: i
+val k: i
+val p: PKi (注：pointer to konst/const int)
+val j2: i
+val k2: i
 ```
 
 ## 练习2.36
@@ -666,6 +720,12 @@ decltype((b)) d = a;
 ++d;
 ```
 
+答案：
+注意，decltype((val)) 一定是个引用类型, 而decltype(val)只有val本身是引用时，decltype(val)才是引用的。
+```C++
+c 是 int 类型，结果为 4; d 是 int& 类型，即 d 是 a 的别名，++d 后的 d 结果为 4，a 最后也是 4. 总结，abcd 最后都是4.
+```
+
 ## 练习2.37
 
 > 赋值是会产生引用的一类典型表达式，引用的类型就是左值的类型。也就是说，如果 i 是 int，则表达式 i=x 的类型是 int&。根据这一特点，请指出下面的代码中每一个变量的类型和值。
@@ -676,9 +736,59 @@ decltype(a) c = a;
 decltype(a = b) d = a;
 ```
 
+答案：
+```C++
+a: int 类型，值为 3.
+b: int 类型，值为 4.
+c: int 类型，值为 3.
+d: int& 类型，绑定到了 a，值为 3.
+```
+注意，`decltype(a = b)`只是推断`a = b`表达式的类型而已，并不进行真正的赋值操作，所以`a`没变。
+
 ## 练习2.38
 
 > 说明由 decltype 指定类型和由 auto 指定类型有何区别。请举一个例子，decltype 指定的类型与 auto 指定的类型一样；再举一个例子，decltype 指定的类型与 auto 指定的类型不一样。
+
+答案：
+
+decltype 和 auto 都是类型推断的方式，区别在于，
+
+1. auto是用编译器计算变量的初始值来推断其类型（需要计算表达式结果），而decltype只通过分析表达式得到类型而已，并不会真正计算表达式结果。
+2. auto推断出来的类型有时与初始值的类型并不完全一致，编译器会适当的改变类型以使其更符合初始化规则。比如，auto一般会忽略掉顶层const，保留底层const；而decltype会保留顶层const。
+3. decltype的结果类型与**表达式形式**密切相关，比如`decltype(val)`和`decltype((val))`推断的类型就不同，前者推断的类型就是`val`本身的类型，后者推断的类型会强制改为引用类型。
+
+举例：
+```C++
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
+int main()
+{
+    int a = 1;
+    auto b = a; // a 是 int， 所以 auto b 也是 int
+    decltype(a) c = a; // a 是 int，所以 decltype(a) 也是 int
+    decltype((a)) d = a; // 加了括号 (a)就会变成引用类型，所以 decltype((a)) 是 int &，所以d是a的别名
+    cout << a << " " << b << " " << c << " " << d << endl;
+    ++b; // int 
+    ++c; // int
+    ++d; // int &, d 绑定到了 a, d 自增导致 a 也自增
+    cout << a << " " << b << " " << c << " " << d << endl;
+    cout << endl;
+
+    const int a2 = 1;
+    auto b2 = a2; // a2 是顶层 const, auto b2 推断会去掉顶层 const，所以 b2 是 int
+    decltype(a2) c2 = a2; // decltype(a2) 就是 a2 的类型, 即 const int
+    decltype((a2)) d2 = a2; // 加了括号就是引用类型了, 即 const int &
+    cout << a2 << " " << b2 << " " << c2 << " " << d2 << endl;
+    ++b2;
+    // ++c2; // clang error: cannot assign to variable 'c2' with const-qualified type 'decltype(a2)' (aka 'const int')
+    // ++d2; // clang error: cannot assign to variable 'd2' with const-qualified type 'decltype((a2))' (aka 'const int &')
+    cout << a2 << " " << b2 << " " << c2 << " " << d2 << endl;
+    return 0;
+}
+```
 
 ## 练习2.39
 
@@ -692,9 +802,44 @@ int main()
 }
 ```
 
+Clang编译错误信息如下：
+```C++
+error: expected ';' after struct
+struct Foo { /* 此处为空  */ } // 注意：没有分号
+                              ^
+                              ;
+1 error generated.
+```
+编译器会提示`struct`后面需要(expect)一个分号。C++定义`struct/class`时一定要在后面加分号！原因：struct/class后面是可以加一个变量名的（表示该变量就是这个类型的），不加分号的话会以为后面有个变量名（但是没有，所以会报错）。
+
 ## 练习2.40
 
 > 根据自己的理解写出 Sales_data 类，最好与书中的例子有所区别。
 
+```C++
+// struct默认是共有的，class默认是私有的
+// 除此之外，struct与class大同小异
+struct Sales_data
+{
+    std::string bookNo;          // 书籍编号
+    std::string bookName;        // 书名
+    unsigned int units_sold = 0; // 销售量
+    double revenue = 0.0;        // 销售收入
+    double sellingprice = 0.0;   // 零售价
+    double saleprice = 0.0;      // 实售价
+    double discount = 0.0;       // 折扣，按 discount = saleprice / sellingprice 计算
+};
+```
 
+## 练习2.41
+
+> 使用你自己的Sale_data类重写1.5.1节（第20页）、1.5.2节（第21页）和1.6节（第22页）的练习。眼下先把Sales_data类的定义和main函数放在一个文件里。
+
+####1.5.1
+
+
+
+## 练习2.42
+
+> 根据你自己的理解重写一个Sales_data.h头文件，并以此为基础重做2.6.2节（第67页）的练习。
 
