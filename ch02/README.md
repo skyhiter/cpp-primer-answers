@@ -836,11 +836,11 @@ struct Sales_data
 
 > 使用你自己的Sale_data类重写1.5.1节（第20页）、1.5.2节（第21页）和1.6节（第22页）的练习。眼下先把Sales_data类的定义和main函数放在一个文件里。
 
-####1.5.1
-
+官方答案详见`exercise2_41_official_answer.cpp`，`main`函数里面包含了练习1.20、1.21、1.22、1.23(同1.24)，测试样例参考`books2_41.txt`。
 
 
 ## 练习2.42
 
 > 根据你自己的理解重写一个Sales_data.h头文件，并以此为基础重做2.6.2节（第67页）的练习。
 
+官方答案详见`exercise2_42_official_answer.cpp`，其实跟上个题内容一样，就是把类的定义写在了头文件`Sales_data.h`里。
