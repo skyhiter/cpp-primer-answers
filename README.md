@@ -44,6 +44,7 @@ update: 该错误被证实，参见P229中间代码的注释：
 ```C++
 Sales_data total; //保存当前求和结果的变量
 ...
+//编注：trans应该是transaction的缩写，表示交易、事务等
 Sales_data trans; //保存下一条交易数据的变量
 ...
 ```
