@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 // struct默认是共有的，class默认是私有的
 // 除此之外，struct与class大同小异
