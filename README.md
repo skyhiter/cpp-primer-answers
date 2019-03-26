@@ -4,20 +4,21 @@
 
 编译环境：
 * Editor: [Visual Studio Code](https://code.visualstudio.com/)
-* OS: macOS Mojave 10.14.3
-* Compiler: Apple LLVM version 10.0.0 (clang-1000.10.44.4)
+* OS: macOS Mojave 10.14.4
+* Compiler: Apple LLVM version 10.0.1 (clang-1001.0.46.3)
+* Debugger: lldb-1001.0.12.1
 
 编译命令：
-* `g++ test.cpp -o test -std=c++11` (`clang`**必须**手动指定C++11的flag)
+* `g++ some_ex.cpp -o some_ex -std=c++11` (`clang`**必须**手动指定C++11的flag)
 * 这里的`g++`使用的`clang`前端，编译信息与`GNU g++`相比有较大不同
   
 ```
 // g++(clang)版本
 $ g++ --version (macOS的g++其实就是clang的别名，并不是真正的GUN g++)
 
-Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/usr/include/c++/4.2.1
-Apple LLVM version 10.0.0 (clang-1000.10.44.4)
-Target: x86_64-apple-darwin18.2.0
+Configured with: --prefix=/Library/Developer/CommandLineTools/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include/c++/4.2.1
+Apple LLVM version 10.0.1 (clang-1001.0.46.3)
+Target: x86_64-apple-darwin18.5.0
 Thread model: posix
 InstalledDir: /Library/Developer/CommandLineTools/usr/bin
 ```
