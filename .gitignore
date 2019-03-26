@@ -1,6 +1,5 @@
 .DS_Store
 */.DS_Store
 .vscode
-test.cpp
-test
+test/
 /data/official_source_code
