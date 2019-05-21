@@ -155,9 +155,9 @@ exercise1_7.cpp:7:58: error: non-ASCII characters are not allowed outside of lit
 2 warnings and 6 errors generated.
 ```
 
-界定符对注释`/* */`中的`/*`会匹配第一个遇到的`*/`，然后`不能嵌套。`就当成了代码中的变量名/语句等等，gcc可能会报错`error: stray(意外的，走失的) '\262' in program`这类信息。由注释引发的错误通常是难以理解的，而且不同情况的错误信息不同。
+界定符对注释`/* */`中的`/*`会匹配第一个遇到的`*/`，然后`不能嵌套。`就当成了代码中的变量名/语句等等，gcc可能会报错`error: stray(意外的，走失的) '\262' in program`这类信息。由注释引发的错误通常是难以理解的，而且不同情况的错误信息不同。
 
-![界定符对注释错误](../pictures/exercise1_7_error.png)
+![界定符对注释错误](../pictures/exercise1_7_error.png)
 
 
 ## 练习1.8
@@ -341,7 +341,7 @@ int main()
 {
     int v = 0, sum = 0;
     // Unix按CTRL+D表示输入流终止（Win是CTRL+Z）
-    // 正确的输入方式：1 2 3 4 5 回车 CTRL+D
+    // 正确的输入方式：1 2 3 4 5 回车 CTRL+D
     while (std::cin >> v)
     {
         sum += v;

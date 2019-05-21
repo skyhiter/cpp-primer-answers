@@ -199,7 +199,7 @@ int main()
 答案：
 ```C++
 std::string global_str; // string对象本身提供了默认的初始化方法，即初始化为空串
-int global_int; // 全局变量默认初始化0
+int global_int; // 全局变量默认初始化0
 int main()
 {
     int local_int; // 函数内局部变量不自动初始化，随机值
@@ -345,7 +345,7 @@ int main()
               << "p: " << p << "\t"
               << "*p: " << *p << std::endl;
 
-    // 通过直接修改目的变量的值，间接改变 *p
+    // 通过直接修改目的变量的值，间接改变 *p
     j = 3;
     std::cout << "new 3\tj: " << j << "\t"
               << "p: " << p << "\t"
