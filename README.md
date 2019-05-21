@@ -5,14 +5,14 @@
 编译环境：
 
 - Editor: [Visual Studio Code](https://code.visualstudio.com/)
-- Platform: macOS Mojave 10.14.5(Darwin 18.6.0, x86_64), Intel i7-7920HQ
+- Platform: macOS Mojave 10.14.5(Darwin 18.6.0, x86_64), Intel i7-7920HQ@3.10GHz
 - Compiler: Apple LLVM version 10.0.1 (clang-1001.0.46.4)
 - Debugger: lldb-1001.0.13.3
 
 编译命令：
 
 - `g++ some_ex.cpp -o some_ex -std=c++11` (`clang`**必须**手动指定 C++11 的 flag)
-- 这里的`g++`使用的`clang`前端，编译信息与`GNU g++`相比有较大不同
+- 这里的`g++`使用的`clang`前端，编译输出信息与`GNU g++/Visual Studio`相比可能有较大不同，还请大家注意
 
 ```
 // g++(clang)版本
@@ -30,6 +30,8 @@ InstalledDir: /Library/Developer/CommandLineTools/usr/bin
 - 第三方英文答案 [C++ Primer 5 answers](https://github.com/Mooophy/Cpp-Primer)
 - 第三方中文答案[《C++ Primer》第五版中文版习题答案](https://github.com/huangmingchuan/Cpp_Primer_Answers)
 - 官方答案书籍《C++ Primer 习题集》，第五版，电子工业出版社，2015 年 3 月第 1 版，2015 年 12 月第 4 次印刷
+
+特别鸣谢 [huangmingchuan](https://github.com/huangmingchuan).
 
 ---
 
