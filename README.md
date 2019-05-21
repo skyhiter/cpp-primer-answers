@@ -5,7 +5,7 @@
 编译环境：
 
 - Editor: [Visual Studio Code](https://code.visualstudio.com/)
-- Platform: macOS Mojave 10.14.5(Darwin 18.6.0, x86_64), Intel i7-7920HQ@3.10GHz
+- Platform: macOS Mojave 10.14.5(Darwin 18.6.0, x86_64), Intel i7-7920HQ @3.10GHz
 - Compiler: Apple LLVM version 10.0.1 (clang-1001.0.46.4)
 - Debugger: lldb-1001.0.13.3
 
