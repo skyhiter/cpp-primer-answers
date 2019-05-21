@@ -1,11 +1,11 @@
-## 中文第五版《C++ Primer》习题答案
+## 中文第五版《C++ Primer》习题答案（Chinese 5th Edition Solutions）
 
 经典著作《C++ Primer》中文第五版，示例代码基于 C++11 标准编写。中国工信出版集团 & 电子工业出版社，2013 年 9 月第 1 版，2018 年 6 月第 18 次印刷。
 
 编译环境：
 
 - Editor: [Visual Studio Code](https://code.visualstudio.com/)
-- OS: macOS Mojave 10.14.5
+- Platform: macOS Mojave 10.14.5(Darwin 18.6.0, x86_64), Intel i7-7920HQ
 - Compiler: Apple LLVM version 10.0.1 (clang-1001.0.46.4)
 - Debugger: lldb-1001.0.13.3
 
